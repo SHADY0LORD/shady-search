@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>لوحة التحكم | Shady Search</title>
+<style>
+:root{color-scheme:dark;--bg:#0a0f0e;--panel:#121917;--panel2:#182420;--line:rgba(255,255,255,.09);--text:#eaf2f0;--muted:#93a7a1;--faint:#60736c;--accent:#29e1b0;--accent-soft:rgba(41,225,176,.12);--danger:#ff7777;--shadow:0 18px 50px rgba(0,0,0,.16)}
+:root[data-theme="light"]{color-scheme:light;--bg:#f4f7f6;--panel:#fff;--panel2:#eef4f1;--line:rgba(20,45,36,.12);--text:#18251f;--muted:#52675e;--faint:#71847b;--accent:#078a68;--accent-soft:rgba(7,138,104,.1);--danger:#bd3434;--shadow:0 14px 38px rgba(20,45,36,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6;transition:background .2s,color .2s}button,a{font:inherit}button{cursor:pointer}.shell{max-width:1180px;margin:auto;padding:24px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}.brand{display:flex;align-items:center;gap:12px}.logo{display:grid;place-items:center;width:44px;height:44px;border-radius:15px;background:var(--accent-soft);color:var(--accent);font-weight:900;font-size:20px}.eyebrow{font-size:12px;color:var(--muted);font-weight:700}.brand h1{margin:0;font-size:clamp(21px,3vw,29px);letter-spacing:-.5px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:9px 13px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,border-color .15s}.btn:hover{border-color:var(--accent)}.btn:active{transform:scale(.98)}.btn.primary{background:var(--accent);color:#041b13;border-color:transparent;font-weight:800}.intro{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:0 0 18px}.intro h2{margin:0;font-size:20px}.intro p{margin:3px 0 0;color:var(--muted);font-size:13px}.status-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);padding:7px 11px;border-radius:99px;color:var(--muted);font-size:12px;white-space:nowrap}.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0;box-shadow:var(--shadow);animation:rise .35s ease both}.stat:nth-child(2){animation-delay:.04s}.stat:nth-child(3){animation-delay:.08s}.stat:nth-child(4){animation-delay:.12s}.stat-head{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;font-weight:700}.stat-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:var(--accent-soft);color:var(--accent);font-size:18px}.stat-value{font-size:clamp(25px,3vw,34px);font-weight:850;letter-spacing:-1px;margin-top:14px;line-height:1.2;overflow-wrap:anywhere}.stat-note{font-size:12px;color:var(--faint);margin-top:8px}.panels{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:14px;margin-top:14px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);min-width:0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:17px 19px;border-bottom:1px solid var(--line)}.panel-head h3{margin:0;font-size:15px}.panel-head p{margin:3px 0 0;font-size:12px;color:var(--muted)}.panel-body{padding:18px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}th,td{text-align:right;padding:12px 18px;border-bottom:1px solid var(--line)}th{font-size:11px;color:var(--faint);font-weight:800;background:var(--panel2)}tbody tr:last-child td{border-bottom:0}td{color:var(--muted)}td strong{color:var(--text);font-weight:700}.filter-row{margin:0 0 20px}.filter-row:last-child{margin-bottom:0}.filter-label{display:flex;justify-content:space-between;gap:12px;font-size:13px;margin-bottom:9px}.filter-label span:first-child{font-weight:700}.filter-label span:last-child{color:var(--muted);font-variant-numeric:tabular-nums}.track{height:9px;background:var(--panel2);border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .7s ease}.meta-list{display:grid;gap:13px}.meta-item{display:flex;align-items:start;justify-content:space-between;gap:15px;padding-bottom:12px;border-bottom:1px solid var(--line)}.meta-item:last-child{border-bottom:0;padding-bottom:0}.meta-item span{color:var(--muted);font-size:13px}.meta-item strong{font-size:13px;text-align:left;overflow-wrap:anywhere}.empty{padding:35px 18px;text-align:center;color:var(--muted);font-size:13px}.notice{margin-top:14px;border:1px solid var(--line);background:var(--panel);border-radius:15px;padding:13px 15px;color:var(--muted);font-size:12px}.error{color:var(--danger)}.hidden{display:none!important}.skeleton{display:inline-block;width:88px;height:28px;border-radius:8px;background:linear-gradient(90deg,var(--panel2),var(--line),var(--panel2));background-size:200% 100%;animation:shimmer 1.3s infinite}@keyframes shimmer{to{background-position:-200% 0}}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panels{grid-template-columns:1fr}}@media(max-width:520px){.shell{padding:16px}.topbar{align-items:flex-start}.brand{gap:9px}.logo{width:39px;height:39px}.actions{justify-content:flex-end}.btn{padding:8px 10px;font-size:12px}.intro{align-items:flex-start;flex-direction:column}.stat{padding:14px;border-radius:16px}.stat-value{font-size:27px}.stat-icon{width:31px;height:31px}.panel-head{padding:15px}.panel-body{padding:15px}th,td{padding:11px 13px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="logo">S</div><div><div class="eyebrow">SHADY SEARCH · ADMIN</div><h1>لوحة التحكم</h1></div></div>
+    <div class="actions">
+      <button class="btn" id="themeToggle" type="button" aria-label="تغيير المظهر">☀️ / 🌙</button>
+      <button class="btn" id="refreshBtn" type="button">↻ تحديث</button>
+      <a class="btn" href="./index.html">← البحث</a>
+      <button class="btn" id="logoutBtn" type="button">تسجيل الخروج</button>
+    </div>
+  </header>
+
+  <section class="intro">
+    <div><h2>نظرة عامة</h2><p>ملخص آمن لحالة البيانات واستخدام النظام.</p></div>
+    <div class="status-pill" id="connectionStatus"><span class="dot"></span><span>جاري الاتصال بالخادم…</span></div>
+  </section>
+
+  <section class="grid" aria-label="إحصائيات عامة">
+    <article class="stat"><div class="stat-head"><span>إجمالي السجلات</span><span class="stat-icon">▤</span></div><div class="stat-value" id="totalRecords"><span class="skeleton"></span></div><div class="stat-note">عدد السجلات الموجودة بالخادم</div></article>
+    <article class="stat"><div class="stat-head"><span>المناطق</span><span class="stat-icon">⌖</span></div><div class="stat-value" id="totalAreas"><span class="skeleton"></span></div><div class="stat-note">المناطق غير الفارغة</div></article>
+    <article class="stat"><div class="stat-head"><span>عمليات البحث · 7 أيام</span><span class="stat-icon">⌕</span></div><div class="stat-value" id="totalSearches"><span class="skeleton"></span></div><div class="stat-note">إجمالي عمليات البحث المسجلة</div></article>
+    <article class="stat"><div class="stat-head"><span>آخر عملية بحث</span><span class="stat-icon">◷</span></div><div class="stat-value" id="lastSearch" style="font-size:19px"><span class="skeleton"></span></div><div class="stat-note">حسب توقيت الخادم</div></article>
+  </section>
+
+  <section class="panels">
+    <article class="panel">
+      <div class="panel-head"><div><h3>آخر عمليات البحث</h3><p>من غير حفظ نص البحث أو بيانات العملاء</p></div><span class="status-pill">آخر 20 عملية</span></div>
+      <div class="table-wrap">
+        <table><thead><tr><th>الوقت</th><th>المستخدم</th><th>الفلاتر</th><th>النتائج</th></tr></thead><tbody id="recentBody"><tr><td colspan="4" class="empty">جاري تحميل البيانات…</td></tr></tbody></table>
+      </div>
+    </article>
+    <article class="panel">
+      <div class="panel-head"><div><h3>استخدام الفلاتر</h3><p>ملخص آخر 7 أيام</p></div></div>
+      <div class="panel-body">
+        <div class="filter-row"><div class="filter-label"><span>البحث النصي</span><span id="textFilterCount">—</span></div><div class="track"><div class="bar" id="textFilterBar"></div></div></div>
+        <div class="filter-row"><div class="filter-label"><span>فلتر المنطقة</span><span id="areaFilterCount">—</span></div><div class="track"><div class="bar" id="areaFilterBar"></div></div></div>
+        <div class="notice">نسجّل نوع الفلتر وعدد النتائج فقط؛ لا يتم حفظ نص البحث أو رقم الهاتف أو اسم العميل في سجل الإحصائيات.</div>
+      </div>
+    </article>
+  </section>
+
+  <section class="panels">
+    <article class="panel">
+      <div class="panel-head"><div><h3>حالة قاعدة البيانات</h3><p>الحالة الفعلية كما يسجلها مسؤول الاستيراد</p></div></div>
+      <div class="panel-body"><div class="meta-list">
+        <div class="meta-item"><span>حالة البيانات</span><strong id="dataStatus">—</strong></div>
+        <div class="meta-item"><span>آخر تحديث مسجل</span><strong id="dataUpdated">غير مسجل</strong></div>
+        <div class="meta-item"><span>آخر نشاط بحث</span><strong id="lastSearchFull">—</strong></div>
+      </div></div>
+    </article>
+    <article class="panel">
+      <div class="panel-head"><div><h3>معلومات النظام</h3><p>معلومات تشغيلية</p></div></div>
+      <div class="panel-body"><div class="meta-list">
+        <div class="meta-item"><span>حالة الاتصال</span><strong id="serverState">جاري الفحص…</strong></div>
+        <div class="meta-item"><span>نطاق الإحصائيات</span><strong>آخر 7 أيام</strong></div>
+        <div class="meta-item"><span>الاحتفاظ بسجل الاستخدام</span><strong>30 يومًا</strong></div>
+      </div></div>
+    </article>
+  </section>
+  <div class="notice" id="pageNotice">الإحصائيات متاحة للمسؤول فقط. إذا ظهرت رسالة إعداد الخادم، لا تعرض قاعدة البيانات القديمة للعامة؛ أكمل إعداد الـ API قبل تفعيل اللوحة.</div>
+</main>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n) => new Intl.NumberFormat('ar-EG').format(Number(n || 0));
+  const dateFmt = (value) => {
+    if (!value) return 'غير مسجل';
+    const normalized = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value) ? value.replace(' ', 'T') + 'Z' : value;
+    const d = new Date(normalized);
+    return Number.isNaN(d.getTime()) ? value : new Intl.DateTimeFormat('ar-EG',{dateStyle:'medium',timeStyle:'short'}).format(d);
+  };
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('shady_search_theme', theme); } catch {}
+    $('themeToggle').textContent = theme === 'dark' ? '☀️ الوضع الفاتح' : '🌙 الوضع الداكن';
+  }
+  let savedTheme = 'dark';
+  try { savedTheme = localStorage.getItem('shady_search_theme') || 'dark'; } catch {}
+  setTheme(savedTheme);
+  $('themeToggle').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
+  function status(text, ok=false) {
+    $('connectionStatus').innerHTML = '<span class="dot" style="'+(ok?'':'background:var(--danger);box-shadow:none')+'"></span><span>'+esc(text)+'</span>';
+    $('serverState').textContent = text;
+  }
+  function showError(message) {
+    status('تعذر الاتصال', false);
+    $('pageNotice').innerHTML = '<span class="error">'+esc(message)+'</span> تأكد من إعداد الـ API وتسجيل الدخول بحساب مسؤول. لا يتم عرض بيانات تجريبية بدل البيانات الحقيقية.';
+    $('recentBody').innerHTML = '<tr><td colspan="4" class="empty error">'+esc(message)+'</td></tr>';
+    ['totalRecords','totalAreas','totalSearches','lastSearch'].forEach(id => $(id).textContent = '—');
+  }
+  async function loadDashboard() {
+    $('refreshBtn').disabled = true;
+    $('refreshBtn').textContent = '… جاري التحديث';
+    try {
+      const response = await fetch('/api/admin/dashboard', {credentials:'same-origin',headers:{'Accept':'application/json'},cache:'no-store'});
+      const payload = await response.json().catch(() => ({}));
+      if (response.status === 401) {
+        showError('يلزم تسجيل الدخول من واجهة النظام أولًا.');
+        return;
+      }
+      if (response.status === 403) {
+        showError('هذا الحساب لا يملك صلاحية المسؤول.');
+        return;
+      }
+      if (!response.ok || !payload.ok) throw new Error(payload.error || 'خدمة الإحصائيات غير جاهزة أو لم يتم إعداد مسار /api.');
+      $('totalRecords').textContent = fmt(payload.totals.records);
+      $('totalAreas').textContent = fmt(payload.totals.areas);
+      $('totalSearches').textContent = fmt(payload.usage.searches7d);
+      $('lastSearch').textContent = payload.usage.lastSearchAt ? dateFmt(payload.usage.lastSearchAt) : 'لا يوجد';
+      $('lastSearchFull').textContent = dateFmt(payload.usage.lastSearchAt);
+      $('dataStatus').textContent = payload.data.status || 'غير مسجل';
+      $('dataUpdated').textContent = dateFmt(payload.data.lastUpdated);
+      $('textFilterCount').textContent = fmt(payload.usage.textFilterUses);
+      $('areaFilterCount').textContent = fmt(payload.usage.areaFilterUses);
+      const max = Math.max(1, Number(payload.usage.textFilterUses||0), Number(payload.usage.areaFilterUses||0));
+      $('textFilterBar').style.width = Math.min(100,Number(payload.usage.textFilterUses||0)/max*100)+'%';
+      $('areaFilterBar').style.width = Math.min(100,Number(payload.usage.areaFilterUses||0)/max*100)+'%';
+      const rows = payload.recent || [];
+      $('recentBody').innerHTML = rows.length ? rows.map(row => {
+        const filters = [row.usedQuery?'بحث نصي':'',row.usedArea?'منطقة':''].filter(Boolean).join(' + ') || 'بدون فلتر';
+        return '<tr><td>'+esc(dateFmt(row.createdAt))+'</td><td><strong>'+esc(row.username)+'</strong></td><td>'+esc(filters)+'</td><td>'+fmt(row.resultsCount)+'</td></tr>';
+      }).join('') : '<tr><td colspan="4" class="empty">لا توجد عمليات مسجلة حتى الآن.</td></tr>';
+      status('متصل بالخادم', true);
+      $('pageNotice').textContent = 'تم تحديث الإحصائيات بنجاح. سجل الاستخدام لا يحتوي على نصوص البحث أو بيانات العملاء، ويتم تنظيف السجلات الأقدم من 30 يومًا.';
+    } catch (error) {
+      showError(error.message || 'حدث خطأ أثناء تحميل لوحة التحكم.');
+    } finally {
+      $('refreshBtn').disabled = false;
+      $('refreshBtn').textContent = '↻ تحديث';
+    }
+  }
+  $('refreshBtn').addEventListener('click', loadDashboard);
+  $('logoutBtn').addEventListener('click', async () => {
+    try { await fetch('/api/auth/logout',{method:'POST',credentials:'same-origin',headers:{'Accept':'application/json'}}); } catch {}
+    location.href = './index.html';
+  });
+  loadDashboard();
+})();
+</script>
+</body>
+</html>
