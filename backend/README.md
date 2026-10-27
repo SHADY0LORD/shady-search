@@ -72,3 +72,19 @@ On Windows, replace the example with the actual path, for example `python backen
 ## Current limitation
 
 This is a safe starting scaffold, not a completed deployment. The current `app.js` still uses hard-coded credentials and downloads the complete database. Do not merge this into production or call the app secure until the front end is migrated, data import is verified, and the security checks pass.
+
+
+## Admin dashboard and appearance
+
+The branch now includes `admin.html` with a responsive admin dashboard and a dark/light theme toggle in the search UI. The dashboard calls `GET /api/admin/dashboard`; the Worker checks the signed session and requires the `admin` role before returning any statistics.
+
+Dashboard metrics include total customer rows, distinct non-empty areas, search activity over the last 7 days, the last 20 usage events, filter-type usage, and import status metadata. Search audit events intentionally **do not** store the actual search text, phone numbers, customer names, customer IDs, or area values. Events are pruned after 30 days during search requests.
+
+The dashboard is not usable until the updated `backend/schema.sql` has been applied to the staging database and the Worker is deployed. For the current cookie configuration, expose the API under the **same origin** as the front end (for example, route `/api/*` through a Vercel rewrite/proxy to the Worker). Do not point the browser directly at a separate cross-site Worker URL without deliberately redesigning the session-cookie and CORS setup.
+
+After a verified customer import, an admin/operator can set metadata in D1, for example:
+`INSERT INTO app_metadata(key,value) VALUES('last_data_update','2026-10-27T00:00:00Z') ON CONFLICT(key) DO UPDATE SET value=excluded.value;`
+`INSERT INTO app_metadata(key,value) VALUES('data_status','تم التحقق من الاستيراد') ON CONFLICT(key) DO UPDATE SET value=excluded.value;`
+Use the actual verified import time and status; do not copy the example timestamp blindly.
+
+**Do not merge/deploy this as a secure replacement yet.** The legacy `index.html` + `app.js` still downloads the static database chunks and uses a hard-coded front-end password. The new dashboard/backend additions are isolated on this branch until the database import, same-origin API route, front-end authentication/search migration, and end-to-end security checks are completed.
