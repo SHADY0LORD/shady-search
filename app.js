@@ -71,6 +71,27 @@ const areaDropdown = document.getElementById('areaDropdown');
 const areaClear = document.getElementById('areaClear');
 const toastEl = document.getElementById('toast');
 const refreshBtn = document.getElementById('refreshBtn');
+const themeToggle = document.getElementById('themeToggle');
+
+function applyTheme(theme) {
+  const nextTheme = theme === 'light' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = nextTheme;
+  try { localStorage.setItem('shady_search_theme', nextTheme); } catch (e) {}
+  if (themeToggle) {
+    themeToggle.textContent = nextTheme === 'dark' ? '☀️' : '🌙';
+    themeToggle.title = nextTheme === 'dark' ? 'تفعيل الوضع الفاتح' : 'تفعيل الوضع الداكن';
+    themeToggle.setAttribute('aria-label', themeToggle.title);
+  }
+}
+
+let initialTheme = 'dark';
+try { initialTheme = localStorage.getItem('shady_search_theme') || 'dark'; } catch (e) {}
+applyTheme(initialTheme);
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+}
 
 let selectedArea = '';
 let highlightedIndex = -1;
