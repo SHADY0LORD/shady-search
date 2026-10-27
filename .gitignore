@@ -1,0 +1,23 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+.dev.vars
+.wrangler/
+node_modules/
+dist/
+coverage/
+
+# Private customer data and local database artifacts
+data/customers.db*
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.csv
+*.csv.gz
+*.parquet
+*.backup
+*.bak
