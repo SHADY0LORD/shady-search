@@ -1,0 +1,15 @@
+name = "shady-search-api"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "shady-search-private"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+[vars]
+# Set this to the exact public front-end origin, e.g. https://your-site.example
+ALLOWED_ORIGIN = "https://REPLACE-WITH-YOUR-SITE.example"
+
+# Set SESSION_SECRET with: npx wrangler secret put SESSION_SECRET
+# Never commit the actual secret.
