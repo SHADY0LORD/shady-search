@@ -134,6 +134,19 @@ export default {
       if (!username || !password || username.length > 100 || password.length > 256) {
         return json({error:"اسم المستخدم أو كلمة المرور غير صحيحة"}, 400, headers);
       }
+      // Basic per-IP + username throttle. Add Cloudflare edge rate limiting as a second layer.
+      const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+      const bucketKey = await sha256Hex(ip + String.fromCharCode(10) + username.toLowerCase());
+      const nowForThrottle = Math.floor(Date.now()/1000);
+      const bucket = await env.DB.prepare("SELECT window_start, attempts FROM login_attempts WHERE bucket_key=?").bind(bucketKey).first();
+      if (bucket && bucket.window_start > nowForThrottle - 900 && bucket.attempts >= 10) {
+        return json({error:"محاولات كثيرة. جرّب بعد 15 دقيقة."}, 429, headers);
+      }
+      if (!bucket || bucket.window_start <= nowForThrottle - 900) {
+        await env.DB.prepare("INSERT INTO login_attempts(bucket_key,window_start,attempts) VALUES(?,?,1) ON CONFLICT(bucket_key) DO UPDATE SET window_start=excluded.window_start, attempts=1").bind(bucketKey,nowForThrottle).run();
+      } else {
+        await env.DB.prepare("UPDATE login_attempts SET attempts=attempts+1 WHERE bucket_key=?").bind(bucketKey).run();
+      }
       // Account records and password hashes live only in D1, never in front-end code.
       const user = await env.DB.prepare(
         "SELECT id, username, password_hash, role FROM users WHERE username=? COLLATE NOCASE AND is_active=1"
@@ -189,8 +202,8 @@ export default {
         // Current app supports substring matching across search_blob.
         // Benchmark this against the imported data; use FTS/trigram strategy if scans are slow.
         for (const token of q.split(" ").filter(Boolean).slice(0, 8)) {
-          clauses.push("search_blob LIKE ? ESCAPE '\\'");
-          const escaped = token.replace(/[\\%_]/g, "\\$&");
+          clauses.push("search_blob LIKE ? ESCAPE '!'");
+          const escaped = token.split("").map(ch => (ch === "!" || ch === "%" || ch === "_") ? "!" + ch : ch).join("");
           params.push("%" + escaped + "%");
         }
       }
