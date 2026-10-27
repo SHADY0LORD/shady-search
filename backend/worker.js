@@ -213,11 +213,51 @@ export default {
       try {
         const result = await env.DB.prepare(sql).bind(...params).all();
         const results = (result.results || []).map(safeCustomer);
+        // Record only non-sensitive usage metadata: no query text, phone, customer ID, or area value.
+        await env.DB.prepare(
+          "INSERT INTO search_events(user_id,used_query,used_area,results_count) VALUES(?,?,?,?)"
+        ).bind(user.id, q ? 1 : 0, area ? 1 : 0, results.length).run();
+        // Keep the audit table bounded; old events are automatically removed after 30 days.
+        await env.DB.prepare("DELETE FROM search_events WHERE created_at < datetime('now','-30 days')").run();
         return json({results,count:results.length,limit:MAX_RESULTS}, 200, headers);
       } catch (error) {
         // Avoid returning SQL or customer data in error messages.
         console.error("search query failed");
         return json({error:"تعذر تنفيذ البحث حاليًا"}, 500, headers);
+      }
+    }
+
+    if (url.pathname === "/api/admin/dashboard" && request.method === "GET") {
+      const user = await requireUser(request, env);
+      if (!user) return json({error:"غير مسجل الدخول"}, 401, headers);
+      if (user.role !== "admin") return json({error:"غير مسموح"}, 403, headers);
+      try {
+        const totals = await env.DB.prepare(
+          "SELECT COUNT(*) AS total_records, COUNT(DISTINCT CASE WHEN area IS NOT NULL AND TRIM(area)<>'' THEN area END) AS total_areas FROM customers"
+        ).first();
+        const metadataRows = await env.DB.prepare(
+          "SELECT key,value FROM app_metadata WHERE key IN ('last_data_update','data_status')"
+        ).all();
+        const metadata = Object.fromEntries((metadataRows.results || []).map(row => [row.key, row.value]));
+        const recent = await env.DB.prepare(
+          "SELECT e.created_at,u.username,e.used_query,e.used_area,e.results_count FROM search_events e JOIN users u ON u.id=e.user_id ORDER BY e.id DESC LIMIT 20"
+        ).all();
+        const usage = await env.DB.prepare(
+          "SELECT COUNT(*) AS searches, COALESCE(SUM(used_query),0) AS text_filter_uses, COALESCE(SUM(used_area),0) AS area_filter_uses FROM search_events WHERE created_at >= datetime('now','-7 days')"
+        ).first();
+        const last = await env.DB.prepare(
+          "SELECT MAX(created_at) AS last_search_at FROM search_events"
+        ).first();
+        return json({
+          ok:true,
+          totals:{records:Number(totals?.total_records || 0),areas:Number(totals?.total_areas || 0)},
+          data:{lastUpdated:metadata.last_data_update || null,status:metadata.data_status || "لم يتم تسجيل حالة الاستيراد"},
+          usage:{searches7d:Number(usage?.searches || 0),textFilterUses:Number(usage?.text_filter_uses || 0),areaFilterUses:Number(usage?.area_filter_uses || 0),lastSearchAt:last?.last_search_at || null},
+          recent:(recent.results || []).map(row=>({createdAt:row.created_at,username:row.username,usedQuery:Boolean(row.used_query),usedArea:Boolean(row.used_area),resultsCount:Number(row.results_count || 0)}))
+        },200,headers);
+      } catch (error) {
+        console.error("admin dashboard query failed");
+        return json({error:"تعذر تحميل الإحصائيات. تأكد من تطبيق schema.sql بعد أخذ نسخة احتياطية."},500,headers);
       }
     }
 
