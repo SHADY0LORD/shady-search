@@ -48,6 +48,16 @@ When asked for `SESSION_SECRET`, provide a random secret of at least 32 characte
    `INSERT INTO users(username,password_hash,role,is_active) VALUES('your-admin-username','<GENERATED_HASH>','admin',1);`
 4. Never reuse the old static password `1234`.
 
+## First task: inventory your original database safely
+
+Make a separate backup first. Then run the read-only inventory script on your own computer; it prints schema/counts and a checksum, not customer records.
+
+```bash
+python backend/inspect_source_db.py "PATH/TO/customers.db"
+```
+
+On Windows, replace the example with the actual path, for example `python backend/inspect_source_db.py "D:\\ShadySearch\\customers.db"`. Keep the original database unchanged. Send me the JSON output from this command (it should contain no customer names or phone numbers) so we can choose the right storage and migration approach.
+
 ## Data migration — required before connecting the UI
 
 1. Keep a read-only copy of the original database and record its SHA-256 checksum.
