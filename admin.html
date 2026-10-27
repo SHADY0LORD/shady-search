@@ -78,7 +78,7 @@
   const fmt = (n) => new Intl.NumberFormat('ar-EG').format(Number(n || 0));
   const dateFmt = (value) => {
     if (!value) return 'غير مسجل';
-    const normalized = /^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$/.test(value) ? value.replace(' ', 'T') + 'Z' : value;
+    const normalized = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value) ? value.replace(' ', 'T') + 'Z' : value;
     const d = new Date(normalized);
     return Number.isNaN(d.getTime()) ? value : new Intl.DateTimeFormat('ar-EG',{dateStyle:'medium',timeStyle:'short'}).format(d);
   };
