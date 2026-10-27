@@ -44,3 +44,12 @@ CREATE INDEX IF NOT EXISTS idx_customers_area ON customers(area);
 CREATE INDEX IF NOT EXISTS idx_customers_phone1 ON customers(phone1);
 CREATE INDEX IF NOT EXISTS idx_customers_phone2 ON customers(phone2);
 CREATE INDEX IF NOT EXISTS idx_customers_phone3 ON customers(phone3);
+
+
+-- Coarse login throttling keyed by a hash of IP + normalized username.
+CREATE TABLE IF NOT EXISTS login_attempts (
+  bucket_key TEXT PRIMARY KEY,
+  window_start INTEGER NOT NULL,
+  attempts INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_login_attempts_window ON login_attempts(window_start);
